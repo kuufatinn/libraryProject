@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSpace - Librarian Dashboard</title>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f1fa;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #4B267B;
+            color: white;
+            padding: 20px 30px;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header p {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #dce4f5;
+        }
+
+        /* Main Content */
+        .container {
+            padding: 30px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+
+
+        /* VERTICAL SIDEBAR */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #32145c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #e4d8f5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #8954d8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+        }
+
+        /* MY BOOKING DROPDOWN */
+        .dropdown-menu {
+            display: none;
+            list-style: none;
+            padding: 5px 0 5px 25px;
+            margin: 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: 5px;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #c4a5ff;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .arrow {
+            float: right;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+
+        /* Summary Cards */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #263b65;
+        }
+
+        /* Charts */
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            PTAR<span>Space</span>
+        </div>
+        <!-- Sidebar Navigation -->
+        <ul class="nav-links">
+
+            <ul class="nav-links">
+                 <!-- Navigation Links -->
+                <li><a href="profile.html"><i class="fa-regular fa-user"></i> My Profile</a></li>
+                <li><a href="librarian-dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+                <li><a href="room-management.html"><i class="fa-regular fa-pen-to-square"></i>Discussion Room</a></li>
+                <li><a href="booking-request.html"><i class="fa-solid fa-bell"></i>Booking Request</a></li>
+                <li><a href="booking-report.html"><i class="fa-solid fa-file"></i>Booking Report</a></li>
+                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+            </ul>
+
+    </aside>
+
+
+
+    <main class="container" style="margin-left:250px;padding:20px 20px;height:1000px;">
+
+
+
+        <!-- Welcome Section -->
+        <section class="welcome">
+            <h2>Librarian Dashboard</h2>
+            <p>Welcome! Here is an overview of room bookings.</p>
+        </section>
+
+
+
+
+        <!-- Summary Cards -->
+        <section class="summary">
+
+            <div class="card">
+                <h3>Total Bookings</h3>
+                <p>120</p>
+            </div>
+
+            <div class="card">
+                <h3>Available Rooms</h3>
+                <p>8</p>
+            </div>
+
+            <div class="card">
+                <h3>Pending Requests</h3>
+                <p>12</p>
+            </div>
+
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts">
+
+            <!-- Peak Booking Hours -->
+            <div class="chart-card">
+                <h3>Peak Booking Hours</h3>
+
+                <div class="chart-container">
+                    <canvas id="bookingChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Room Utilization -->
+            <div class="chart-card">
+                <h3>Room Utilization</h3>
+
+                <div class="chart-container">
+                    <canvas id="utilizationChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+    <footer>
+
+			<p>
+				Library Online Booking System
+			</p>
+
+			<p>
+				© 2026 PTARSpace. All Rights Reserved.
+			</p>
+
+		</footer>
+
+
+    <script>
+
+        // 1. Peak Booking Hours Bar Chart
+
+        const bookingChart = document.getElementById('bookingChart');
+
+        new Chart(bookingChart, {
+            type: 'bar',
+
+            data: {
+                labels: [
+                    '9 AM',
+                    '10 AM',
+                    '11 AM',
+                    '12 PM',
+                    '1 PM',
+                    '2 PM',
+                    '3 PM',
+                    '4 PM'
+                ],
+
+                datasets: [{
+                    label: 'Number of Bookings',
+
+                    data: [5, 12, 18, 8, 10, 20, 15, 7],
+
+                    backgroundColor: '#7952A5',
+
+                    borderRadius: 5
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Bookings'
+                        }
+                    },
+
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+
+        // 2. Room Utilization Doughnut Chart
+
+        const utilizationChart =
+            document.getElementById('utilizationChart');
+
+        new Chart(utilizationChart, {
+            type: 'doughnut',
+
+            data: {
+                labels: [
+                    'Booked',
+                    'Available'
+                ],
+
+                datasets: [{
+                    data: [70, 30],
+
+                    backgroundColor: [
+                        '#7952A5',
+                        '#EDE5F6'
+                    ],
+
+                    borderWidth: 0
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

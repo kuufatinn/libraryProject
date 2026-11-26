@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSpace - Booking Request Management</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f1fa;
+            color: #333;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #32145c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #e4d8f5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #8954d8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: calc(100vh - 90px);
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #32145c;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* TABLE CARD */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-header {
+            margin-bottom: 20px;
+        }
+
+        .table-header h3 {
+            color: #32145c;
+            font-size: 18px;
+        }
+
+        /* TABLE */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        th {
+            background: #7952A5;
+            color: white;
+            text-align: left;
+            padding: 15px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #faf8fd;
+        }
+
+        tbody tr:hover {
+            background: #f0e9f8;
+        }
+
+        /* STATUS LABELS */
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: #fff3d6;
+            color: #a66a00;
+        }
+
+        .approved {
+            background: #e4f5e9;
+            color: #258044;
+        }
+
+        .declined {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .action-dropdown {
+            padding: 9px 12px;
+            border: 1px solid #d5c4ed;
+            border-radius: 6px;
+            background: white;
+            color: #4B267B;
+            font-size: 13px;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .action-dropdown:focus {
+            outline: none;
+            border-color: #7952A5;
+        }
+
+        .processed {
+            color: #888;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-left: 250px;
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #e4d8f5;
+            line-height: 2;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .container,
+            footer {
+                margin-left: 200px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            PTAR<span>Space</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="profile.html">
+                    <i class="fa-regular fa-user"></i> My Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="librarian-dashboard.html">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="room-management.html">
+                    <i class="fa-regular fa-pen-to-square"></i> Discussion Room
+                </a>
+            </li>
+
+            <li>
+                <a href="booking-request.html" class="active">
+                    <i class="fa-solid fa-bell"></i> Booking Request
+                </a>
+            </li>
+
+            <li>
+                <a href="booking-report.html">
+                    <i class="fa-solid fa-file"></i> Booking Report
+                </a>
+            </li>
+
+            <li>
+                <a href="login.html">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </li>
+        </ul>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <section class="welcome">
+            <h2>Booking Request Management</h2>
+            <p>Review and manage student discussion room booking requests.</p>
+        </section>
+
+        <section class="card">
+
+            <div class="table-header">
+                <h3>Booking Request List</h3>
+            </div>
+
+            <!-- BOOKING TABLE -->
+            <div class="table-wrapper">
+
+                <table id="bookingTable">
+
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Room ID</th>
+                            <th>Time Slot</th>
+                            <th>Student ID</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>No. of Students</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>B001</td>
+                            <td>R001</td>
+                            <td>TS001</td>
+                            <td>2026123456</td>
+                            <td>25/11/2026</td>
+                            <td>9:00 AM - 10:00 AM</td>
+                            <td>5</td>
+                            <td>Group Discussion</td>
+                            <td>
+                                <span class="status pending">Pending</span>
+                            </td>
+                            <td>
+                                <select class="action-dropdown" onchange="updateStatus(this)">
+                                    <option value="Pending" selected>Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Declined">Declined</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>B002</td>
+                            <td>R002</td>
+                            <td>TS002</td>
+                            <td>2026123457</td>
+                            <td>26/11/2026</td>
+                            <td>10:00 AM - 11:00 AM</td>
+                            <td>4</td>
+                            <td>Assignment Discussion</td>
+                            <td>
+                                <span class="status approved">Approved</span>
+                            </td>
+                            <td>
+                                <span class="processed">Processed</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>B003</td>
+                            <td>R001</td>
+                            <td>TS003</td>
+                            <td>2026123458</td>
+                            <td>27/11/2026</td>
+                            <td>11:00 AM - 12:00 PM</td>
+                            <td>6</td>
+                            <td>Project Discussion</td>
+                            <td>
+                                <span class="status pending">Pending</span>
+                            </td>
+                            <td>
+                                <select class="action-dropdown" onchange="updateStatus(this)">
+                                    <option value="Pending" selected>Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Declined">Declined</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Library Online Booking System</p>
+        <p>© 2026 PTARSpace. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        // UPDATE BOOKING STATUS
+        function updateStatus(dropdown) {
+
+            let row = dropdown.closest("tr");
+            let bookingId = row.cells[0].textContent;
+            let newStatus = dropdown.value;
+
+            if (confirm("Change booking " + bookingId + " status to " + newStatus + "?")) {
+
+                let statusCell = row.cells[8];
+
+                if (newStatus === "Pending") {
+                    statusCell.innerHTML =
+                        '<span class="status pending">Pending</span>';
+                }
+                else if (newStatus === "Approved") {
+                    statusCell.innerHTML =
+                        '<span class="status approved">Approved</span>';
+                }
+                else if (newStatus === "Declined") {
+                    statusCell.innerHTML =
+                        '<span class="status declined">Declined</span>';
+                }
+
+            } else {
+                dropdown.value = statusCellText(row);
+            }
+        }
+
+        function statusCellText(row) {
+            return row.cells[8].textContent.trim();
+        }
+
+    </script>
+
+</body>
+
+</html>

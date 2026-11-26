@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | PTARSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f1fa;
+            color: #333;
+        }
+
+        /* VERTICAL SIDEBAR */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #32145c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #e4d8f5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #8954d8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+        }
+
+        /* MY BOOKING DROPDOWN */
+        .dropdown-menu {
+            display: none;
+            list-style: none;
+            padding: 5px 0 5px 25px;
+            margin: 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: 5px;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #c4a5ff;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .arrow {
+            float: right;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            padding: 35px;
+            flex: 1;
+        }
+
+        .page-title {
+            margin-bottom: 10px;
+            color: #32145c;
+            font-size: 27px;
+        }
+
+        .description {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        
+        .form-container {
+            background: white;
+            max-width: 850px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding-bottom: 22px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #32145c;
+            color: #c4a5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: #f0e8fa;
+            border: 1px solid #d7c4ef;
+            color: #32145c;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 6px;
+        }
+
+        .form-section-title {
+            color: #32145c;
+            font-size: 19px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #7045a0;
+        }
+
+        .readonly-field {
+            background: #f0e8fa;
+            border: 1px solid #d7c4ef !important;
+            color: #32145c;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+
+        .confirmation {
+            display: none;
+            background: #e8f7ec;
+            border: 1px solid #a5d6b1;
+            color: #246b37;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submit-btn {
+            background: #5b2c91;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: #32145c;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VERTICAL SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            PTAR<span>Space</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="profile.html" class="active"><i class="fa-regular fa-user"></i> My Profile</a></li>
+            <li><a href="student_dashboard.html"><i class="fa-solid fa-gauge"></i> My Dashboard</a></li>
+            <li><a href="browse_rooms.html"><i class="fa-regular fa-folder"></i> Browse Discussion Room</a></li>
+            <li><a href="booking_form.html"><i class="fa-regular fa-pen-to-square"></i> Room Booking Form</a></li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-list-check"></i>
+                    My Booking
+                    <i class="fa-solid fa-chevron-down arrow" id="dropdownArrow"></i>
+                </a>
+
+                <ul class="dropdown-menu" id="bookingDropdown">
+                    <li><a href="my-bookings.html"><i class="fa-regular fa-eye"></i> View Booking</a></li>
+                </ul>
+            </li>
+
+            <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content">
+            <h1 class="page-title">My Profile</h1>
+            <p class="description">View and update your personal account details.</p>
+
+            <div class="form-container">
+                <div class="confirmation" id="saveAlert">
+                    <i class="fa-solid fa-circle-check"></i> Profile updated successfully!
+                </div>
+
+                <div class="profile-header">
+                    <div class="avatar-circle">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                    <div>
+                        <h2 style="color: #32145c; font-size: 20px;" id="displayName">Nurul Aminah Binti Ali</h2>
+                        <span class="role-badge">Student Account</span>
+                    </div>
+                </div>
+
+                <form onsubmit="saveProfile(event)">
+                    <h3 class="form-section-title">
+                        <i class="fa-solid fa-id-card"></i> Account Information
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="userID">User ID</label>
+                            <input type="text" id="userID" class="readonly-field" value="USR001" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="matricNum">Matric Number</label>
+                            <input type="text" id="matricNum" class="readonly-field" value="2026123456" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" value="Nurul Aminah Binti Ali" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" value="2026123456@student.uitm.edu.my" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNum">Phone Number</label>
+                            <input type="text" id="phoneNum" value="012-3456789" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">New Password (leave blank to keep current password)</label>
+                        <input type="password" id="password" placeholder="Enter new password">
+                    </div>
+
+                    <button type="submit" class="btn submit-btn">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>Library Online Booking System</p>
+            <p>© 2026 PTARSpace. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("bookingDropdown");
+            const arrow = document.getElementById("dropdownArrow");
+            dropdown.classList.toggle("show");
+            if (dropdown.classList.contains("show")) {
+                arrow.classList.remove("fa-chevron-down");
+                arrow.classList.add("fa-chevron-up");
+            } else {
+                arrow.classList.remove("fa-chevron-up");
+                arrow.classList.add("fa-chevron-down");
+            }
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            document.getElementById("displayName").innerText = document.getElementById("fullName").value;
+            document.getElementById("saveAlert").style.display = "block";
+        }
+    </script>
+</body>
+</html>

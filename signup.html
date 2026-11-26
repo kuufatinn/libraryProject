@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | PTARSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: #faf8ff;
+            color: #302044;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* NAVIGATION BAR (Matches homepage.html) */
+        nav {
+            background: #32145c;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #c4a5ff;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: #c4a5ff;
+        }
+        .nav-links .signup {
+            background: #a77be8;
+            padding: 11px 20px;
+            border-radius: 8px;
+            color: white;
+        }
+        .nav-links .signup:hover {
+            background: #8c5dd0;
+        }
+
+        /* SIGNUP CARD */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 45px 20px;
+        }
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(55, 25, 90, 0.1);
+            border: 1px solid #eee5fa;
+            overflow: hidden;
+        }
+        .auth-header {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px 25px;
+        }
+        .auth-header h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+        .auth-header h1 span {
+            color: #c4a5ff;
+        }
+        .auth-header p {
+            font-size: 14px;
+            color: #e4d8f5;
+        }
+        .auth-body {
+            padding: 30px;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #32145c;
+            margin-bottom: 6px;
+        }
+        .role-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .role-btn {
+            flex: 1;
+            padding: 11px;
+            text-align: center;
+            border: 1.5px solid #d5c4ed;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            color: #32145c;
+            background: white;
+            transition: 0.3s;
+        }
+        .role-btn.active {
+            background: #8954d8;
+            color: white;
+            border-color: #8954d8;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #32145c;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            background: white;
+        }
+        .form-group input:focus {
+            border-color: #7045a0;
+        }
+        .btn-primary {
+            width: 100%;
+            background: #5b2c91;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+        .btn-primary:hover {
+            background: #32145c;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .auth-footer a {
+            color: #8753c4;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PTAR<span>Space</span></div>
+        <div class="nav-links">
+            <a href="homepage.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="signup">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create <span>Account</span></h1>
+                <p>Register to book discussion, meeting, and study rooms</p>
+            </div>
+            <div class="auth-body">
+                <form onsubmit="handleSignup(event)">
+                    <span class="form-label">Account Type</span>
+                    <div class="role-toggle">
+                        <button type="button" class="role-btn active" id="studentBtn" onclick="selectRole('STUDENT')">
+                            <i class="fa-solid fa-graduation-cap"></i> Student
+                        </button>
+                        <button type="button" class="role-btn" id="librarianBtn" onclick="selectRole('LIBRARIAN')">
+                            <i class="fa-solid fa-user-tie"></i> Librarian
+                        </button>
+                    </div>
+                    <input type="hidden" id="userRole" name="userRole" value="STUDENT">
+
+                    <div class="form-group" id="matricGroup">
+                        <label for="matricNum">Matric Number</label>
+                        <input type="text" id="matricNum" name="matricNum" placeholder="e.g., 2026123456" required>
+                    </div>
+
+                    <div class="form-group" id="staffGroup" style="display: none;">
+                        <label for="staffNum">Staff Number</label>
+                        <input type="text" id="staffNum" name="staffNum" placeholder="e.g., STF98765">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="e.g., 2026123456@student.uitm.edu.my" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNum">Phone Number</label>
+                        <input type="tel" id="phoneNum" name="phoneNum" placeholder="e.g., 012-3456789" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-user-plus"></i> Sign Up
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="login.html">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Library Online Booking System</p>
+        <p>© 2026 PTARSpace. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function selectRole(role) {
+            document.getElementById('userRole').value = role;
+            const studentBtn = document.getElementById('studentBtn');
+            const librarianBtn = document.getElementById('librarianBtn');
+            const matricGroup = document.getElementById('matricGroup');
+            const staffGroup = document.getElementById('staffGroup');
+            const matricInput = document.getElementById('matricNum');
+            const staffInput = document.getElementById('staffNum');
+
+            if (role === 'STUDENT') {
+                studentBtn.classList.add('active');
+                librarianBtn.classList.remove('active');
+                matricGroup.style.display = 'block';
+                staffGroup.style.display = 'none';
+                matricInput.required = true;
+                staffInput.required = false;
+            } else {
+                librarianBtn.classList.add('active');
+                studentBtn.classList.remove('active');
+                matricGroup.style.display = 'none';
+                staffGroup.style.display = 'block';
+                matricInput.required = false;
+                staffInput.required = true;
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            alert('Registration successful! Redirecting to Login...');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

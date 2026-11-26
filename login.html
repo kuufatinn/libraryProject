@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | PTARSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: #faf8ff;
+            color: #302044;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* NAVIGATION BAR (Matches homepage.html) */
+        nav {
+            background: #32145c;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #c4a5ff;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: #c4a5ff;
+        }
+        .nav-links .signup {
+            background: #a77be8;
+            padding: 11px 20px;
+            border-radius: 8px;
+            color: white;
+        }
+        .nav-links .signup:hover {
+            background: #8c5dd0;
+        }
+
+        /* LOGIN CARD */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 45px 20px;
+        }
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(55, 25, 90, 0.1);
+            border: 1px solid #eee5fa;
+            overflow: hidden;
+        }
+        .auth-header {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 32px 25px;
+        }
+        .auth-header h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+        .auth-header h1 span {
+            color: #c4a5ff;
+        }
+        .auth-header p {
+            font-size: 14px;
+            color: #e4d8f5;
+        }
+        .auth-body {
+            padding: 32px 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #32145c;
+            margin-bottom: 8px;
+        }
+        .input-icon {
+            position: relative;
+        }
+        .input-icon i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8954d8;
+        }
+        .input-icon input, .input-icon select {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            background: white;
+        }
+        .input-icon input:focus, .input-icon select:focus {
+            border-color: #7045a0;
+        }
+        .btn-primary {
+            width: 100%;
+            background: #5b2c91;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+        .btn-primary:hover {
+            background: #32145c;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+        }
+        .auth-footer a {
+            color: #8753c4;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PTAR<span>Space</span></div>
+        <div class="nav-links">
+            <a href="homepage.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="signup">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Welcome <span>Back</span></h1>
+                <p>Log in to PTARSpace Library Booking System</p>
+            </div>
+            <div class="auth-body">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginRole">Login As</label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-user-tag"></i>
+                            <select id="loginRole">
+                                <option value="STUDENT">Student</option>
+                                <option value="LIBRARIAN">Librarian</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-icon">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="e.g., 2026123456@student.uitm.edu.my" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i> Log In
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Don't have an account? <a href="signup.html">Sign Up here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Library Online Booking System</p>
+        <p>© 2026 PTARSpace. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const role = document.getElementById('loginRole').value;
+            if (role === 'LIBRARIAN') {
+                window.location.href = 'librarian-dashboard.html';
+            } else {
+                window.location.href = 'profile.html';
+            }
+        }
+    </script>
+</body>
+</html>

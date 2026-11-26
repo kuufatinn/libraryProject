@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LibSpace | Library Room Booking</title>
+
+    <style>
+
+        /* GENERAL SETTINGS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #faf8ff;
+            color: #302044;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: #32145c;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c4a5ff;
+        }
+
+        .nav-links .signup {
+            background: #a77be8;
+            padding: 11px 20px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .nav-links .signup:hover {
+            background: #8c5dd0;
+            color: white;
+        }
+
+        /* HERO SECTION (untuk section besar top)*/ 
+        .hero {
+            min-height: 580px;
+            display: flex;
+            align-items: center;
+            padding: 80px 8%;
+            background: linear-gradient(
+                120deg,
+                #32145c,
+                #7144a5,
+                #a47bd4
+            );
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 680px;
+            animation: fadeIn 1s ease;
+        }
+		
+		
+		/* HERO IMAGE */
+
+		.hero {
+			min-height: 550px;
+			display: flex;
+			align-items: center;
+			padding: 80px 8%;
+
+			background-image: 
+				linear-gradient(rgba(35, 15, 65, 0.65), rgba(35, 15, 65, 0.65)),
+				url("images/libraryBackground.jpg");
+
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+
+			color: white;
+			border-radius: 0 0 25px 25px;
+		}
+
+		.hero-content {
+			max-width: 650px;
+		}
+
+		.hero-content {
+			flex: 1;
+		}
+
+		.hero-image {
+			flex: 1;
+			max-width: 520px;
+		}
+
+		.hero-image img {
+			width: 100%;
+			height: 350px;
+			object-fit: cover;
+			border-radius: 25px;
+			box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+			transition: 0.4s;
+		}
+
+		.hero-image img:hover {
+			transform: scale(1.03);
+		}
+		
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            line-height: 1.2;
+            margin-bottom: 22px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #eee3ff;
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #57288b;
+        }
+
+        .btn-primary:hover {
+            background: #e9ddff;
+            transform: translateY(-4px);
+        }
+
+        .btn-outline {
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #57288b;
+        }
+
+        /* SECTION GENERAL */
+        section {
+            padding: 80px 8%;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-heading h2 {
+            color: #44206d;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            color: #82748f;
+            font-size: 15px;
+        }
+
+        /* FACILITIES SECTION */
+        .facilities {
+            background: #faf8ff;
+        }
+
+        .facility-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .facility-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 5px 25px rgba(67,32,109,0.07);
+            transition: 0.3s;
+            border: 1px solid #eee5fa;
+			text-align: center;
+        }
+		
+		/* Center card ketiga dekat facility */
+		.facility-card:last-child {
+			grid-column: 1 / 3;
+			justify-self: center;
+			width: 50%;
+		}
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(67,32,109,0.15);
+        }
+
+		/*ni untuk h3 tulisan facility tu*/
+        .facility-card h3 { 
+            color: #542c83;
+            font-size: 23px;
+            margin-bottom: 12px;
+			text-align: center;
+        }
+
+		/*ni untuk p tulisan panjang tu*/
+        .facility-card p {
+            color: #81748e;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+			text-align: center;
+        }
+
+		/*ni untuk a tulisan book now tu*/
+        .facility-card a {
+            text-decoration: none;
+            color: #8753c4;
+            font-weight: bold;
+            font-size: 20px;
+			text-align: center;
+        }
+
+        .facility-card a:hover {
+            color: #44206d;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+
+        /* ANIMATION */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav {
+                padding: 18px 6%;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 65px;
+                left: 0;
+                width: 100%;
+                background: #32145c;
+                flex-direction: column;
+                padding: 25px;
+                gap: 22px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero {
+                padding: 75px 7%;
+                min-height: 500px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .facility-container,
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading h2 {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVIGATION BAR -->
+<nav>
+
+    <div class="logo">
+         PTAR<span>Space</span>
+    </div>
+
+
+    <div class="nav-links" id="navLinks">
+
+        <a href="homepage.html">Home</a>
+
+        <a href="login.html">Login</a>
+
+        <a href="signup.html" class="signup">Sign Up</a>
+
+    </div>
+
+</nav>
+
+
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="hero-tag">UNIVERSITY OF TEKNOLOGI MARA</div>
+
+        <h1>LIBRARY ONLINE BOOKING SYSTEM</h1>
+
+        <p>
+            Looking for the perfect place to study or collaborate
+            with your friends? Come book the room easily with one touch only!
+        </p>
+
+        <div class="hero-buttons">
+            <a href="login.html" class="btn btn-primary">Book Now !</a>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- FACILITIES SECTION -->
+<section class="facilities" id="facilities">
+
+    <div class="section-heading">
+
+        <h2>Explore Our Facilities</h2>
+
+        <p>
+            Find the perfect space for your academic activities.
+        </p>
+
+    </div>
+
+
+    <div class="facility-container">
+
+        <div class="facility-card">
+
+            <h3>Discussion Rooms</h3>
+
+            <p>
+                Comfortable spaces designed for group discussions, assignments and brainstorming study sessions.
+            </p>
+
+            <a href="login.html">
+                Book Now !
+            </a>
+
+        </div>
+		
+		<div class="facility-card">
+			
+			<h3>Meeting Rooms</h3>
+		
+			<p>
+				Comfortable spaces for any special meetings, collaboration and presentation practice.
+			</p>
+			
+			<a href="login.html">
+				Book Now !
+			</a>
+		
+		</div>
+
+
+        <div class="facility-card">
+
+            <h3>Study Rooms</h3>
+
+            <p>
+                Dedicated personal spaces for students to study alone and enjoy healthy environments.
+            </p>
+
+            <a href="login.html">
+                Book Now !
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <p>
+        Library Online Booking System
+    </p>
+
+    <p>
+        © 2026 PTARSpace. All Rights Reserved.
+    </p>
+
+</footer>
+
+</body>
+</html>

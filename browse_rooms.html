@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <title>Browse Rooms | PTARSpace</title>
+
+    <style>
+        /* GENERAL STYLING */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8f5ff;
+            color: #32145c;
+        }
+
+        /* VERTICAL SIDEBAR */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #32145c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #e4d8f5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #8954d8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+        }
+
+        /* MY BOOKING DROPDOWN */
+        .dropdown-menu {
+            display: none;
+            list-style: none;
+            padding: 5px 0 5px 25px;
+            margin: 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: 5px;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #c4a5ff;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .arrow {
+            float: right;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            text-align: center;
+            padding: 65px 30px 30px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: #8954d8;
+        }
+
+        /* BOOKING HOURS INFORMATION */
+        .booking-hours {
+            max-width: 1100px;
+            width: 90%;
+            margin: 0 auto 35px;
+            background: #eee5ff;
+            border-left: 5px solid #8954d8;
+            padding: 18px 22px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .booking-hours i {
+            font-size: 25px;
+            color: #713bb5;
+        }
+
+        .booking-hours h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .booking-hours p {
+            font-size: 16px;
+            color: #74658b;
+            line-height: 1.6;
+        }
+
+        /* ROOM CONTAINER */
+        .room-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        /* ROOM CARD */
+        .room-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(55, 25, 90, 0.09);
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(55, 25, 90, 0.16);
+        }
+
+        /* ROOM IMAGE */
+        .room-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .room-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .room-card:hover .room-image img {
+            transform: scale(1.05);
+        }
+
+        /* ROOM DETAILS */
+        .room-details {
+            padding: 25px;
+        }
+
+        .room-details h2 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        /* ROOM INFORMATION */
+        .room-info {
+            background: #f8f5ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 18px 0;
+        }
+
+        .room-info h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #713bb5;
+        }
+
+        .room-info ul {
+            list-style: none;
+        }
+
+        .room-info li {
+            font-size: 16px;
+            color: #786b89;
+            margin-bottom: 8px;
+        }
+
+        .room-info li i {
+            color: #8954d8;
+            margin-right: 8px;
+            width: 14px;
+        }
+
+        /* BOOK ROOM BUTTON */
+        .room-btn {
+            display: block;
+            text-align: center;
+            background: #713bb5;
+            color: white;
+            text-decoration: none;
+            padding: 13px;
+            border-radius: 9px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .room-btn:hover {
+            background: #32145c;
+            box-shadow: 0 5px 15px rgba(50, 20, 92, 0.2);
+        }
+
+
+        /* FOOTER */
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- VERTICAL SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            PTAR<span>Space</span>
+        </div>
+
+        <ul class="nav-links">
+			
+			<ul class="nav-links">
+			<li><a href="profile.html"><i class="fa-regular fa-user"></i>    My Profile</a></li>
+			<li><a href="student_dashboard.html"><i class="fa-solid fa-gauge"></i>    My Dashboard</a></li>
+			<li><a href="browse_rooms.html" class="active"><i class="fa-regular fa-folder"></i>   Browse Discussion Room</a></li>
+			<li><a href="booking_form.html"><i class="fa-regular fa-pen-to-square"></i>   Room Booking Form</a></li>
+
+            <li class="dropdown">
+
+                <a href="javascript:void(0)" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-list-check"></i>
+                    My Booking
+                    <i class="fa-solid fa-chevron-down arrow"
+                       id="dropdownArrow"></i>
+                </a>
+
+                <ul class="dropdown-menu" id="bookingDropdown">
+                    <li><a href="my-bookings.html"><i class="fa-regular fa-eye"></i>View Booking</a></li>
+                </ul>
+
+            </li>
+
+            <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i>   Logout</a></li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- PAGE INTRODUCTION -->
+        <section class="page-header">
+
+            <h1>
+                <span class="highlight">Browse Available Rooms!</span>
+            </h1>
+
+        </section>
+
+
+        <!-- BOOKING HOURS -->
+        <section class="booking-hours">
+
+            <i class="fa-regular fa-clock"></i>
+
+            <div>
+                <h3>Room Booking Hours</h3>
+
+                <p>
+                    Students can make room bookings between
+                    <strong>8:00 AM and 12:00 PM</strong>.
+                    Please check the available time slots before submitting
+                    your booking request.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- ROOM SELECTION CARDS -->
+        <section class="room-container">
+
+
+            <!-- DISCUSSION ROOM -->
+            <div class="room-card">
+
+                <div class="room-image">
+                    <img src="images/discussionRoom.jpg"
+                         alt="Discussion Room">
+                </div>
+
+                <div class="room-details">
+
+                    <h2>Discussion Room</h2>
+
+                    <div class="room-info">
+
+                        <h4>Room Information</h4>
+
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-users"></i>
+                                Number of Pax: 4-5 students
+                            </li>
+
+                            <li>
+                                <i class="fa-solid fa-comments"></i>
+                                Floor 1, 1 - 10 rooms
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <a href="booking_form.html" class="room-btn">
+                        Book Rooms
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- MEETING ROOM -->
+            <div class="room-card">
+
+                <div class="room-image">
+                    <img src="images/meetingRoom.jpg"
+                         alt="Meeting Room">
+                </div>
+
+                <div class="room-details">
+
+                    <h2>Meeting Room</h2>
+
+                    <div class="room-info">
+
+                        <h4>Room Information</h4>
+
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-users"></i>
+                                Number of Pax: 12 - 15 students
+                            </li>
+
+                            <li>
+                                <i class="fa-solid fa-comments"></i>
+                                Floor 3, 1 - 5 rooms
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <a href="booking_form.html" class="room-btn">
+                        Book Rooms
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- STUDY ROOM -->
+            <div class="room-card">
+
+                <div class="room-image">
+                    <img src="images/studyRoom.jpg"
+                         alt="Study Room">
+                </div>
+
+                <div class="room-details">
+
+                    <h2>Study Room</h2>
+
+                    <div class="room-info">
+
+                        <h4>Room Information</h4>
+
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-users"></i>
+                                Number of Pax: 1 - 2 students
+                            </li>
+
+                            <li>
+                                <i class="fa-solid fa-comments"></i>
+                                Floor 2, 1 - 10 rooms
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <a href="booking_form.html" class="room-btn">
+                        Book Rooms
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- FOOTER -->
+		<footer>
+
+			<p>
+				Library Online Booking System
+			</p>
+
+			<p>
+				© 2026 PTARSpace. All Rights Reserved.
+			</p>
+
+		</footer>
+
+    </main>
+
+
+    <!-- JAVASCRIPT FOR DROPDOWN -->
+    <script>
+
+        function toggleDropdown() {
+
+            const dropdown = document.getElementById("bookingDropdown");
+            const arrow = document.getElementById("dropdownArrow");
+
+            dropdown.classList.toggle("show");
+
+            if (dropdown.classList.contains("show")) {
+                arrow.classList.remove("fa-chevron-down");
+                arrow.classList.add("fa-chevron-up");
+            } else {
+                arrow.classList.remove("fa-chevron-up");
+                arrow.classList.add("fa-chevron-down");
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

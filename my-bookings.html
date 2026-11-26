@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | PTARSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f1fa;
+            color: #333;
+        }
+
+        /* VERTICAL SIDEBAR */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #32145c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #c4a5ff;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #e4d8f5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #503078;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #8954d8;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links a i {
+            margin-right: 10px;
+        }
+
+        /* MY BOOKING DROPDOWN */
+        .dropdown-menu {
+            display: none;
+            list-style: none;
+            padding: 5px 0 5px 25px;
+            margin: 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: 5px;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #c4a5ff;
+        }
+
+        .dropdown-menu li a:hover, .dropdown-menu li a.sub-active {
+            background: #503078;
+            color: white;
+            font-weight: bold;
+        }
+
+        .arrow {
+            float: right;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            padding: 35px;
+            flex: 1;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: #32145c;
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .description {
+            color: #777;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-bar input, .filter-bar select {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+
+        /* Card & Table (Matches booking-request.html) */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #7952A5;
+            color: white;
+            text-align: left;
+            padding: 15px 14px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 13.5px;
+            vertical-align: middle;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #faf8fd;
+        }
+
+        tbody tr:hover {
+            background: #f0e9f8;
+        }
+
+        /* Status Pills */
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3d6;
+            color: #a66a00;
+        }
+
+        .approved {
+            background: #e4f5e9;
+            color: #258044;
+        }
+
+        .declined, .cancelled {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .btn-action {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 4px;
+        }
+
+        .btn-view {
+            background: #f0e8fa;
+            color: #32145c;
+        }
+
+        .btn-view:hover {
+            background: #5b2c91;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+            color: white;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(25, 10, 48, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        .modal-box {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: #32145c;
+            color: white;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 22px;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .modal-body strong {
+            color: #32145c;
+            display: inline-block;
+            width: 145px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #32145c;
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #d5c4ed;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VERTICAL SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            PTAR<span>Space</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="profile.html"><i class="fa-regular fa-user"></i> My Profile</a></li>
+            <li><a href="student_dashboard.html"><i class="fa-solid fa-gauge"></i> My Dashboard</a></li>
+            <li><a href="browse_rooms.html"><i class="fa-regular fa-folder"></i> Browse Discussion Room</a></li>
+            <li><a href="booking_form.html"><i class="fa-regular fa-pen-to-square"></i> Room Booking Form</a></li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="active" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-list-check"></i>
+                    My Booking
+                    <i class="fa-solid fa-chevron-up arrow" id="dropdownArrow"></i>
+                </a>
+
+                <ul class="dropdown-menu show" id="bookingDropdown">
+                    <li><a href="my-bookings.html" class="sub-active"><i class="fa-regular fa-eye"></i> View Booking</a></li>
+                </ul>
+            </li>
+
+            <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content">
+            <div class="header-row">
+                <div>
+                    <h1 class="page-title">My Bookings</h1>
+                    <p class="description">View and manage your library room reservations.</p>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search booking ID or room...">
+                    <select id="statusFilter" onchange="filterTable()">
+                        <option value="ALL">All Status</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Declined">Declined</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-wrapper">
+                    <table id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Room</th>
+                                <th>Date</th>
+                                <th>Time Slot</th>
+                                <th>No. of Students</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>B001</strong></td>
+                                <td>Discussion Room (Floor 1)</td>
+                                <td>25/11/2026</td>
+                                <td>9:00 AM - 10:00 AM</td>
+                                <td>5</td>
+                                <td>Group Discussion</td>
+                                <td><span class="status approved">Approved</span></td>
+                                <td>
+                                    <button class="btn-action btn-view" onclick="openModal('B001', 'Discussion Room', 'Floor 1, Room 03', '25/11/2026', '9:00 AM - 10:00 AM', '5 Students', 'Group Discussion', 'Approved')">
+                                        <i class="fa-regular fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>B002</strong></td>
+                                <td>Meeting Room (Floor 3)</td>
+                                <td>26/11/2026</td>
+                                <td>10:00 AM - 11:00 AM</td>
+                                <td>12</td>
+                                <td>Presentation Practice</td>
+                                <td id="status-B002"><span class="status pending">Pending</span></td>
+                                <td>
+                                    <button class="btn-action btn-view" onclick="openModal('B002', 'Meeting Room', 'Floor 3, Room 02', '26/11/2026', '10:00 AM - 11:00 AM', '12 Students', 'Presentation Practice', 'Pending')">
+                                        <i class="fa-regular fa-eye"></i> View
+                                    </button>
+                                    <button class="btn-action btn-cancel" id="cancel-B002" onclick="cancelBooking('B002')">
+                                        <i class="fa-solid fa-xmark"></i> Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>B003</strong></td>
+                                <td>Study Room (Floor 2)</td>
+                                <td>27/11/2026</td>
+                                <td>11:00 AM - 12:00 PM</td>
+                                <td>2</td>
+                                <td>Assignment Revision</td>
+                                <td><span class="status declined">Declined</span></td>
+                                <td>
+                                    <button class="btn-action btn-view" onclick="openModal('B003', 'Study Room', 'Floor 2, Room 07', '27/11/2026', '11:00 AM - 12:00 PM', '2 Students', 'Assignment Revision', 'Declined')">
+                                        <i class="fa-regular fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>Library Online Booking System</p>
+            <p>© 2026 PTARSpace. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <!-- DETAILS MODAL -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Booking Details</h3>
+                <span style="cursor:pointer; font-size:20px;" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("bookingDropdown");
+            const arrow = document.getElementById("dropdownArrow");
+            dropdown.classList.toggle("show");
+            if (dropdown.classList.contains("show")) {
+                arrow.classList.remove("fa-chevron-down");
+                arrow.classList.add("fa-chevron-up");
+            } else {
+                arrow.classList.remove("fa-chevron-up");
+                arrow.classList.add("fa-chevron-down");
+            }
+        }
+
+        function filterTable() {
+            const search = document.getElementById("searchInput").value.toLowerCase();
+            const status = document.getElementById("statusFilter").value.toLowerCase();
+            const rows = document.querySelectorAll("#bookingsTable tbody tr");
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const rowStatus = row.cells[6].innerText.trim().toLowerCase();
+                const matchesSearch = text.includes(search);
+                const matchesStatus = (status === "all" || rowStatus === status);
+                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
+            });
+        }
+
+        function cancelBooking(id) {
+            if (confirm("Are you sure you want to cancel booking " + id + "?")) {
+                document.getElementById("status-" + id).innerHTML = '<span class="status cancelled">Cancelled</span>';
+                document.getElementById("cancel-" + id).style.display = "none";
+            }
+        }
+
+        function openModal(id, room, loc, date, time, pax, purpose, status) {
+            document.getElementById("modalContent").innerHTML = `
+                <p><strong>Booking ID:</strong> ${id}</p>
+                <p><strong>Room Type:</strong> ${room}</p>
+                <p><strong>Room Location:</strong> ${loc}</p>
+                <p><strong>Booking Date:</strong> ${date}</p>
+                <p><strong>Time Slot:</strong> ${time}</p>
+                <p><strong>No. of Students:</strong> ${pax}</p>
+                <p><strong>Purpose:</strong> ${purpose}</p>
+                <p><strong>Status:</strong> ${status}</p>
+            `;
+            document.getElementById("detailModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("detailModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
